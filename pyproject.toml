@@ -1,0 +1,17 @@
+[project]
+name = "physics"
+description = "A multipurpose physics engine meant to be used alongside a rendering engine."
+version = "0.1.0"
+authors = [
+    { name = "Axis (blankRiot96)", email = "blankRiot96@gmail.com" }
+]
+dependencies = [
+    "pygame",
+]
+
+
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
