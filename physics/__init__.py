@@ -1,11 +1,13 @@
 import abc
-import pygame
-import typing as t
-from physics.types_ import Mass, Acceleration, Velocity, Position  # type: ignore
-from typing_extensions import Self
 import enum
+import typing
+import pygame
+from typing_extensions import Self
+import logging
 
-print("test that this works")
+from physics.types_ import Mass, Acceleration, Velocity, Position  # type: ignore
+
+logging.info("Physics module initialized")
 
 
 class Side(enum.Enum):
@@ -39,7 +41,7 @@ class PhysicalEntity(abc.ABC):
         acceleration: Acceleration,
         initial_velocity: Velocity,
         position: Position,
-        rect: t.Optional[pygame.Rect] = None,
+        rect: typing.Optional[pygame.Rect] = None,
     ) -> None:
         self.mass = mass
         self.acceleration = acceleration
@@ -66,7 +68,7 @@ class PhysicalEntity(abc.ABC):
         """Returns the position of the entity in the next frame."""
         return self.position + self.velocity
 
-    def would_collide_with(self, other_entity: Self) -> t.Optional[Side]:
+    def would_collide_with(self, other_entity: Self) -> typing.Optional[Side]:
         """Checks if entity would collide with the other entity in the next frame.
 
         Args:
