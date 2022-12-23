@@ -5,8 +5,6 @@ from physics.types_ import Mass, Acceleration, Velocity, Position  # type: ignor
 from typing_extensions import Self
 import enum
 
-print("test that this works")
-
 
 class Side(enum.Enum):
     """An enum for the sides of a rectangle.
@@ -42,7 +40,7 @@ class PhysicalEntity(abc.ABC):
         rect: t.Optional[pygame.Rect] = None,
     ) -> None:
         self.mass = mass
-        self.acceleration = acceleration
+        self.acceleration = pygame.Vector2(*acceleration)
         self.velocity = pygame.Vector2(*initial_velocity)
         self.position = pygame.Vector2(*position)
 
@@ -62,7 +60,7 @@ class PhysicalEntity(abc.ABC):
 
         self.collidable = collidable
 
-    def peak_position(self) -> Position:
+    def peak_position(self) -> pygame.math.Vector2: 
         """Returns the position of the entity in the next frame."""
         return self.position + self.velocity
 
@@ -89,15 +87,16 @@ class PhysicalEntity(abc.ABC):
         next_position = self.peak_position()
         other_next_position = other_entity.peak_position()
 
+        if next_position.y >= other_next_position.y:
+            return Side.TOP
+        elif next_position.y < other_next_position.y:
+            return Side.BOTTOM
+
         if next_position.x <= other_next_position.x:
             return Side.RIGHT
         elif next_position.x > other_next_position.x:
             return Side.LEFT
 
-        if next_position.y <= other_next_position.y:
-            return Side.TOP
-        elif next_position.t > other_next_position.y:
-            return Side.BOTTOM
 
 
 class World2D:
@@ -119,5 +118,7 @@ class World2D:
         for entity in self._entities:
             entity.velocity += entity.acceleration
             entity.position += entity.velocity
-    
+            
+            if entity.rect is not None:
+                entity.rect.topleft = entity.position
 
